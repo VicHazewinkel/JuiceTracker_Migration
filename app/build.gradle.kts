@@ -23,7 +23,7 @@ plugins {
 
 android {
     namespace = "com.example.juicetracker"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.example.juicetracker"
@@ -36,7 +36,7 @@ android {
     }
 
     buildTypes {
-        release {
+        debug {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -48,15 +48,34 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.4"
+    }
     kotlinOptions {
         jvmTarget = "17"
     }
     buildFeatures {
         viewBinding = true
+        /*
+        viewBinding {
+            CacheResetOnProcessCanceled.enabled = false
+        }
+
+         */
+        dataBinding = true
+        /*
+        dataBinding {
+            enable = false
+        }
+        */
+        compose = true
     }
 }
 
 dependencies {
+    val composeBom = platform("androidx.compose:compose-bom:2024.02.01")
+    implementation(composeBom)
+
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.core:core-ktx:1.10.1")
@@ -72,4 +91,17 @@ dependencies {
     implementation("androidx.room:room-runtime:${rootProject.extra["room_version"]}")
     implementation("com.google.android.material:material:1.9.0")
     ksp("androidx.room:room-compiler:${rootProject.extra["room_version"]}")
+
+    // Compose
+    implementation("androidx.compose.runtime:runtime")
+    implementation("androidx.compose.ui:ui")
+    implementation("androidx.compose.foundation:foundation")
+    implementation("androidx.compose.foundation:foundation-layout")
+    implementation("androidx.compose.material:material")
+    implementation("androidx.compose.runtime:runtime-livedata")
+    implementation("androidx.compose.ui:ui-tooling-preview")
+    debugImplementation("androidx.compose.ui:ui-tooling")
+
+
+
 }
