@@ -17,6 +17,12 @@ package com.example.juicetracker.ui
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -24,7 +30,9 @@ import com.example.juicetracker.data.Juice
 import com.example.juicetracker.data.JuiceColor
 import com.example.juicetracker.databinding.ListItemBinding
 
+
 class JuiceListAdapter(
+
     private var onEdit: (Juice) -> Unit,
     private var onDelete: (Juice) -> Unit
 ) : ListAdapter<Juice, JuiceListAdapter.JuiceListViewHolder>(JuiceDiffCallback()) {
@@ -34,12 +42,54 @@ class JuiceListAdapter(
         private val onEdit: (Juice) -> Unit,
         private val onDelete: (Juice) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
+        /*
         private val nameView = binding.name
         private val description = binding.description
         private val drinkImage = binding.drinkColorOverlay
         private val ratingBar = binding.ratingBar
+         */
+        private val composeView = binding.composeView
+
+        @Composable
+        fun JuiceListItem(juice: Juice) {
+            Column {
+                DrinkName(name = juice.name)
+                DrinkDescription(description = juice.description)
+                DrinkColor(color = juice.color)
+                DrinkRating(rating = juice.rating)
+            }
+        }
+
+        @Composable
+        fun DrinkName(name: String) {
+            Text(text = name)
+        }
+
+        @Composable
+        fun DrinkDescription(description: String) {
+            Text(text = description)
+        }
+
+        @Composable
+        fun DrinkColor(color: String) {
+            Text(text = color)
+        }
+
+        @Composable
+        fun DrinkRating(rating: Int) {
+            Text(text = rating.toString())
+        }
 
         fun bind(juice: Juice) {
+            composeView.setContent {
+                JuiceListItem(juice)
+            }
+            }
+
+
+
+
+            /*
             nameView.text = juice.name
             description.text = juice.description
             drinkImage.setColorFilter(
@@ -53,8 +103,10 @@ class JuiceListAdapter(
             binding.root.setOnClickListener {
                 onEdit(juice)
             }
+
+             */
         }
-    }
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = JuiceListViewHolder(
         ListItemBinding.inflate(LayoutInflater.from(parent.context), parent, false),
@@ -76,3 +128,4 @@ class JuiceDiffCallback : DiffUtil.ItemCallback<Juice>() {
         return oldItem == newItem
     }
 }
+
